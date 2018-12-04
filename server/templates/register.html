@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+		<title>
+			e-Alfred - Novo dispositivo
+		</title>
+	</head>
+	{% extends "layout.html" %}
+	{% block body %}
+		<div class="header">
+			<a href="/"><img class="header-logo" src="{{ url_for('static', filename='images/eAlfred_Text_Black.png') }}"></a>
+			<div class="header-right">
+				<a class="active" href="/">Início</a>
+			</div>
+		</div>
+		<div class="login-page">
+			<div class="form">
+				<form class="login-form" method="post">
+					<p>Identificação para o dispositivo</p>
+					{{ form.identificacao }}
+					<p>Número da porta</p>
+					{{ form.porta }}
+					<p>Qual o tipo da porta conectada? (marque se for digital, não marque se for analógica) {{ form.tipo_porta }}</p>
+					<p>É um sensor ou atuador? (marque se for sensor) {{ form.tipo_dispositivo }}</p>
+					<input type="submit" value="Adicionar dispositivo">
+				</form>
+			</div>
+		</div>
+	{% endblock %}
+</html>

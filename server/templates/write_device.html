@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
+		<title>
+			e-Alfred - {{ title }}
+		</title>
+	</head>
+	{% extends "layout.html" %}
+	{% block body %}
+		<div class="header">
+			<a href="/"><img class="header-logo" src="{{ url_for('static', filename='images/eAlfred_Text_Black.png') }}"></a>
+			<div class="header-right">
+				<a class="active" href="/">Início</a>
+			</div>
+		</div>
+		<div class="sidenav">
+			<p><b><a href="/">Início</a></b></p>
+			<p><a href="/new-device">Cadastrar dispositivo</a></p>
+			<p><a href="/sensores">Sensores</a></p>
+			<p><a href="/atuadores">Atuadores</a></p>
+		</div>
+		<div class="main">
+			<div class="form">
+				<form class="login-form" action="/write-actuator/{{ id }}" method="post">
+					<p>Nome do dispositivo: {{ actuator.identificacao }}</p>
+					<p>Porta: {{ actuator.porta }}</p>
+					<p>Deseja escrever em PWM?</p>
+					{{ form.pwm }}
+					<p>Digite o valor desejado</p>
+					{{ form.value }}
+					<input type="submit" value="{{  button_message }}">
+				</form>
+			</div>
+		</div>
+	{% endblock %}
+</html>
