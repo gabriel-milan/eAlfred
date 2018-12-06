@@ -1,0 +1,93 @@
+#include <ArduinoJson.h>
+#include <Ethernet.h>
+#include <SPI.h>
+
+byte mac[] = { 0xA4, 0x28, 0x72, 0xCA, 0x55, 0x2F };
+String JSONString;
+
+EthernetServer server(80);
+void setup() {
+
+ 
+  Serial.begin(9600);
+  Serial.println();
+
+  Ethernet.begin(mac);
+  server.begin();
+
+  //Ethernet Shield Initialize
+  Serial.print("====== My IP: ");
+  Serial.println(Ethernet.localIP());
+  server.begin();
+
+}
+ 
+void loop() {
+ 
+  Serial.println("Parsing start: ");
+  
+  EthernetClient client = server.available();
+  if (client) {
+    while (client.connected())
+    {
+      if (client.available())
+      {
+        char c = client.read();
+        if (JSONString.length() < 100) {
+          JSONString += c;
+        }
+      }
+    }
+  }
+  //char JSONMessage[] = " {\"request_type\": 0 , \"port_type\": 0, \"port_number\": 1 , \"value\": 13}";
+
+  StaticJsonBuffer<300> JSONBuffer;                         //Memory pool
+  JsonObject& parsed = JSONBuffer.parseObject(JSONString); //Parse message
+ 
+  if (!parsed.success()) {   //Check for errors in parsing
+ 
+    Serial.println("Parsing failed");
+    delay(5000);
+    return;
+ 
+  }
+ 
+  int request_type = parsed["request_type"]; //Get request type 
+  int port_type = parsed["port_type"];//Get the port type
+  int port_number = parsed["port_number"];//Get the port number
+  int value = parsed["value"];//Get the value
+
+
+  if (request_type == 0){
+    if (port_type == 0){
+      pinMode("A" + port_number,INPUT);
+      analogRead("A" + port_number);
+    }
+    if (port_type == 1){
+      pinMode(port_number,INPUT);
+      digitalRead(port_number);
+    }
+  }
+  
+  if (request_type == 1){
+    if (port_type == 0){
+      pinMode("A" + port_number,OUTPUT);
+      analogWrite("A" + port_number, value);
+    }
+    if (port_type == 1){
+      pinMode(port_number,OUTPUT);
+      digitalWrite(port_number,value);
+    }
+  }
+   
+   
+   if (request_type == 2){
+    if (port_type == 1){
+      pinMode(port_number,OUTPUT);
+      digitalWrite(port_number,value);
+    }
+  }
+ 
+  Serial.println();
+  delay(5000);
+  }

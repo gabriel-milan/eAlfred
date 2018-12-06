@@ -29,4 +29,4 @@ TIPO_ATUADOR = False
 HTTP_401_DEFAULT_MESSAGE = 'Você não está autorizado a realizar essa ação!'
 
 # Arduino configurations
-ARDUINO_IP = "127.0.0.1:5000/test-api"
+ARDUINO_IP = "192.168.88.111"

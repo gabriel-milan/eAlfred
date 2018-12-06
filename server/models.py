@@ -40,6 +40,8 @@ class Dispositivo (db.Document):
 
     # Function to parse data from Arduino
     def __parse_response (self, json_message):
+        print ("======================JSON MESSAGE======================")
+        print (json_message)
         response_dict = json.loads(json_message)
         print ("======================RESPONSE DICT======================")
         print (response_dict)

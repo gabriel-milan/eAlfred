@@ -147,7 +147,6 @@ def read(id):
 
 # Route to all requests
 @app.route('/requests')
-@login_required
 def requests():
     user_type = get_user_type()
     if (user_type == PROFESSOR_USER):
